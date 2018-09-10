@@ -13,6 +13,8 @@ trait JokeAlg[F[_]]{
 }
 
 object JokeAlg {
+  def apply[F[_]](implicit F: JokeAlg[F]): JokeAlg[F] = F
+
   final case class Joke(joke: String) extends AnyVal
   object Joke {
     // We can make this easier if we use circe-generic
@@ -34,7 +36,7 @@ object JokeAlg {
 
   final case class JokeAlgError(e: Throwable) extends RuntimeException
 
-  def impl[F[_]: Sync](C: Client[F]): JokeAlg[F] = new JokeAlg[F]{
+  def impl[F[_]: Sync](implicit C: Client[F]): JokeAlg[F] = new JokeAlg[F]{
     def getJoke: F[JokeAlg.Joke] = {
       val request = Request[F](
         Method.GET,

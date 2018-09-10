@@ -9,7 +9,7 @@ import org.http4s.HttpRoutes
 
 object Edge {
 
-  def jokeRoutes[F[_]: Sync](J: JokeAlg[F]): HttpRoutes[F] = {
+  def jokeRoutes[F[_]](implicit F: Sync[F], J: JokeAlg[F]): HttpRoutes[F] = {
     val dsl = new Http4sDsl[F]{}
     import dsl._
     HttpRoutes.of[F] {
@@ -21,7 +21,7 @@ object Edge {
     }
   }
 
-  def helloWorldRoutes[F[_]: Sync](H: HelloWorldAlg[F]): HttpRoutes[F] = {
+  def helloWorldRoutes[F[_]](implicit F: Sync[F], H: HelloWorldAlg[F]): HttpRoutes[F] = {
     val dsl = new Http4sDsl[F]{}
     import dsl._
     HttpRoutes.of[F] {
